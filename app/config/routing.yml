@@ -1,0 +1,13 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+
+# app/config/routing.yml
+blog_list:
+    path:     /blog
+    defaults: { _controller: AppBundle:Blog:list }
+
+blog_show:
+    path:     /blog/{slug}
+    defaults: { _controller: AppBundle:Blog:show }
