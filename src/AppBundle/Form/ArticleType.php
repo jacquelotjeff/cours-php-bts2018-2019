@@ -23,7 +23,7 @@ class ArticleType extends AbstractType
                 'required' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Ajouter !'
+                'label' => $options['is_edit'] ? 'Editer !' : 'Ajouter !'
             ]);
     }
 
@@ -32,6 +32,7 @@ class ArticleType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => 'AppBundle\Entity\Article',
+                'is_edit' => false,
             ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,7 +18,7 @@ class DefaultController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', [
-            'articles' => $this->getDoctrine()->getRepository('AppBundle:Article')->findAll(),
+            'articles' => $this->getDoctrine()->getRepository(Article::class)->findAll(),
         ]);
     }
 
@@ -27,7 +28,7 @@ class DefaultController extends Controller
     public function addArticleAction(Request $request)
     {
         $article = new Article();
-        $form = $this->createForm('AppBundle\Form\ArticleType', $article);
+        $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
 
@@ -48,21 +49,32 @@ class DefaultController extends Controller
     /**
      * @Route("/articles/edit/{idArticle}", name="edit_article")
      */
-    public function editArticleAction(int $idArticle)
+    public function editArticleAction(Request $request, int $idArticle)
     {
-        /** @var Article $article */
-        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->find($idArticle);
+        $article = $this->getDoctrine()->getRepository(Article::class)->find($idArticle);
 
         if (null === $article) {
             throw new NotFoundHttpException("Désolé, l'article n'a pas été trouvé.");
         }
 
-        $article->setNom("Nouveau nom pour mon article");
+        $form = $this->createForm(ArticleType::class, $article, [
+            'is_edit' => true
+        ]);
 
-        $this->getDoctrine()->getManager()->flush();
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute('show_article', [
-            'idArticle' => $article->getId()
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($article);
+            $manager->flush();
+
+            return $this->redirectToRoute('show_article', [
+                'idArticle' => $article->getId()
+            ]);
+        }
+
+        return $this->render('default/edit_article.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -71,7 +83,7 @@ class DefaultController extends Controller
      */
     public function showArticleAction(int $idArticle)
     {
-        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->find($idArticle);
+        $article = $this->getDoctrine()->getRepository(Article::class)->find($idArticle);
 
         if (null === $article) {
             throw new NotFoundHttpException("Désolé, l'article n'a pas été trouvé.");

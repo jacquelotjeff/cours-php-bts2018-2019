@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="color: pink;">Edition d'un article</h1>
+
+    {{ form_start(form) }}
+
+    <div style="display: block;">
+        {{ form_row(form.nom) }}
+        <br>
+        {{ form_row(form.contenu) }}
+    </div>
+
+    {{ form_widget(form.submit) }}
+
+    {{ form_end(form) }}
+{% endblock body %}
