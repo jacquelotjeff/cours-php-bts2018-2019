@@ -3,4 +3,18 @@
 {% block body %}
     <h1>{{ article.nom }}</h1>
     <p>{{ article.contenu }}</p>
+    {#
+        On définie categorie en tant que variable
+        pour éviter de refaire la jointure à plusieurs
+        reprises.
+    #}
+    {% set categorie = article.categorie %}
+    {% if categorie is not null %}
+        <p>{{ categorie.nom }}</p>
+    {% else %}
+        <p>Auncune catégorie définie.</p>
+    {% endif %}
+
+    {# On aurait pu aussi faire la condition en ternaire ci-dessous : #}
+    {#{{ categorie is not null ? categorie.nom : 'Aucune catégorie définie'}}#}
 {% endblock body %}

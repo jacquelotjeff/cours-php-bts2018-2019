@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Liste des articles</h1>
     <p><a href="{{ path('add_article') }}">Nouveau</a></p>
-    
+
     {% for article in articles %}
         <h3>{{ article.nom }}</h3>
         <p>{{ article.contenu }}</p>

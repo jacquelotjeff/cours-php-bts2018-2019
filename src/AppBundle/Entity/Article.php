@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Article
@@ -25,6 +27,7 @@ class Article
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255)
+     * @Assert\NotBlank(message="Le titre de l'article est requis.")
      */
     private $nom;
 
@@ -32,9 +35,16 @@ class Article
      * @var string
      *
      * @ORM\Column(name="contenu", type="text")
+     * @Assert\NotBlank(message="Le contenu de l'article est requis.")
      */
     private $contenu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Categorie", inversedBy="articles")
+     * @ORM\JoinColumn(name="categorie_id", referencedColumnName="id")
+     * @Assert\NotNull(message="Vous devez sélectionner une catégorie.")
+     */
+    private $categorie;
 
     /**
      * Get id
@@ -92,6 +102,26 @@ class Article
     public function getContenu()
     {
         return $this->contenu;
+    }
+
+    /**
+     * @return Categorie
+     */
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    /**
+     * @param Categorie $categorie
+     *
+     * @return $this
+     */
+    public function setCategorie(?Categorie $categorie)
+    {
+        $this->categorie = $categorie;
+
+        return $this;
     }
 }
 

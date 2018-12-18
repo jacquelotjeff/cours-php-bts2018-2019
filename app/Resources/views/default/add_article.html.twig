@@ -6,9 +6,13 @@
     {{ form_start(form) }}
 
     <div style="display: block;">
-        {{ form_row(form.nom) }}
+        {{ form_label(form.nom) }}
+        {{ form_widget(form.nom) }}
+        {{ form_errors(form.nom) }}
         <br>
         {{ form_row(form.contenu) }}
+        <br>
+        {{ form_row(form.categorie) }}
     </div>
 
     {{ form_widget(form.submit) }}
