@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
 use AppBundle\Form\ArticleType;
+use AppBundle\Service\ArticleManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,8 +15,10 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction()
+    public function indexAction(ArticleManager $articleManager)
     {
+        $dernierArticle = $articleManager->dernierArticle();
+
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', [
             'articles' => $this->getDoctrine()->getRepository(Article::class)->findAll(),

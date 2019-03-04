@@ -15,6 +15,8 @@
         <p>Auncune catégorie définie.</p>
     {% endif %}
 
+
+    <a href="{{ path('homepage') }}">Retour à la liste</a>
     {# On aurait pu aussi faire la condition en ternaire ci-dessous : #}
     {#{{ categorie is not null ? categorie.nom : 'Aucune catégorie définie'}}#}
 {% endblock body %}

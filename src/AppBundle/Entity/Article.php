@@ -40,11 +40,23 @@ class Article
     private $contenu;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_creation", type="datetime")
+     */
+    private $dateCreation;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Categorie", inversedBy="articles")
      * @ORM\JoinColumn(name="categorie_id", referencedColumnName="id")
      * @Assert\NotNull(message="Vous devez sélectionner une catégorie.")
      */
     private $categorie;
+
+    public function __construct()
+    {
+        $this->dateCreation = new \DateTime();
+    }
 
     /**
      * Get id
@@ -122,6 +134,18 @@ class Article
         $this->categorie = $categorie;
 
         return $this;
+    }
+
+    public function setDateCreation(\DateTime $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getDateCreation(): \DateTime
+    {
+        return $this->dateCreation;
     }
 }
 
